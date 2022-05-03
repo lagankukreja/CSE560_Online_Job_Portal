@@ -135,6 +135,7 @@ class Applicant(db.Model):
     __tablename__ = "Applicant"
     # job_id = db.Column(db.Integer,USER_ID_SEQ, primary_key = True,server_default=USER_ID_SEQ.next_value() )
     applicant_id = db.Column(db.Integer, primary_key = True)
+    applicant_name = db.Column(db.String(100), nullable = False)
     applicant_email = db.Column(db.String(100), nullable = False)
     education_id = db.Column(db.Integer, db.ForeignKey(Education.education_id, onupdate = 'CASCADE', ondelete = 'CASCADE' ))
     age = db.Column(db.Integer, nullable = False)
@@ -148,7 +149,8 @@ class Applicant(db.Model):
     job_country_id = db.Column(db.Integer, db.ForeignKey(Country.country_id,onupdate = 'CASCADE', ondelete = 'CASCADE' ))
     expected_salary_id = db.Column(db.Integer, db.ForeignKey(Salary.salary_id,onupdate = 'CASCADE', ondelete = 'CASCADE' ))
 
-    def __init__(self,applicant_email,education_id,age,gender_id,race_id,skill_id,work_authorization,state_id,country_id,job_state_id,job_country_id,expected_salary_id) -> None:
+    def __init__(self,applicant_name,applicant_email,education_id,age,gender_id,race_id,skill_id,work_authorization,state_id,country_id,job_state_id,job_country_id,expected_salary_id) -> None:
+            self.applicant_name=applicant_name
             self.applicant_email = applicant_email
             self.education_id = education_id
             self.age=age
@@ -277,7 +279,7 @@ def update(sno):
 @app.route("/Applicant", methods = ['GET','POST'])
 def Applicants():
     if request.method=='POST':
-        # name = request.form['name']
+        applicant_name = request.form['applicant_name']
         # email = request.form['email']
         applicant_email = request.form['applicant_email'] 
         education_id = request.form['education_id']
@@ -291,7 +293,7 @@ def Applicants():
         job_state_id = request.form['job_state_id']
         job_country_id = request.form['job_country_id']
         expected_salary_id = request.form['expected_salary_id']
-        job = Applicant(applicant_email=applicant_email,education_id=education_id,  age = age,gender_id=gender_id, race_id=race_id,skill_id=skill_id,work_authorization = work_authorization, state_id = state_id, country_id=country_id, job_state_id=job_state_id, job_country_id=job_country_id, expected_salary_id=expected_salary_id)
+        job = Applicant(applicant_name=applicant_name,applicant_email=applicant_email,education_id=education_id,  age = age,gender_id=gender_id, race_id=race_id,skill_id=skill_id,work_authorization = work_authorization, state_id = state_id, country_id=country_id, job_state_id=job_state_id, job_country_id=job_country_id, expected_salary_id=expected_salary_id)
         db.session.add(job)
         db.session.commit()
     allJobs = Applicant.query.all()   
@@ -299,3 +301,6 @@ def Applicants():
 
 if __name__ == "__main__)":
     app.run(debug= True, port = 8000)
+
+
+    
