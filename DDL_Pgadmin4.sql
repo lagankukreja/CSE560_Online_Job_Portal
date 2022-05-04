@@ -63,6 +63,7 @@ CREATE TABLE public."Gender"(
  );
  CREATE TABLE public."Applicant"(
  applicant_id SERIAL PRIMARY KEY NOT NULL
+ ,applicant_name  VARCHAR(100) NOT NULL
  ,applicant_email VARCHAR(100) NOT NULL
  ,education_id INTEGER NOT NULL REFERENCES public."Education" ON DELETE CASCADE ON UPDATE CASCADE
  ,age INTEGER NOT NULL
